@@ -11,6 +11,8 @@ conda_environment_name = 'my_r_environment'
 # Create a Streamlit app
 st.title("Run R Script")
 
+r_code = ""
+
 # Create a text area for entering R code
 r_code = st.text_area("Enter R code here", height=200)
 
@@ -37,5 +39,7 @@ if st.button("Run R Script"):
         st.code(result)
     except subprocess.CalledProcessError as e:
         st.error(f"Error: {e.output}")
+        
+st.download_button('Download the correct code', r_code)
 
 st.write("Example R code: `library(data.table)`")
