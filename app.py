@@ -27,7 +27,7 @@ if st.button("Run R Script"):
         subprocess.run(activate_env_command, shell=True, executable='/bin/bash')
 
         # Print the Conda environment name
-        st.write(f"Activated R Conda environment and it running the code")
+        st.write(f"Activated R Conda environment and running the code")
 
         # Install missing R packages (if not already installed)
         # install_packages_command = 'conda install -c conda-forge r-tidyverse r-broom'
