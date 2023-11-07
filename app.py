@@ -3,7 +3,7 @@ import subprocess
 import re
 
 # Specify the path to your Conda environment YAML file
-conda_environment_yaml = '/Users/harikrishnadev/Desktop/Github/flask-app-r/r_environment.yml'
+conda_environment_yaml = 'https://github.com/harikrishnad1997/flask-app-r/blob/master/r_environment.yml?raw=true'
 
 # Specify the name of your Conda R environment
 conda_environment_name = 'my_r_environment'
