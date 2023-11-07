@@ -37,9 +37,8 @@ if st.button("Run R Script"):
         result = subprocess.check_output(['conda', 'run', '-n', conda_environment_name, 'Rscript', '-e', r_code], stderr=subprocess.STDOUT, universal_newlines=True)
         st.header("Output:")
         st.code(result)
+        st.download_button('Download the correct code', r_code,file_name="r_code.txt")
     except subprocess.CalledProcessError as e:
         st.error(f"Error: {e.output}")
-        
-st.download_button('Download the correct code', r_code)
 
 st.write("Example R code: `library(data.table)`")
