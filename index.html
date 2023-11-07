@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Run R Script</title>
+</head>
+<body>
+    <h1>Run R Script</h1>
+    <form method="POST" action="{{ url_for('run_r_script') }}">
+        <textarea name="r_code" rows="10" cols="40"></textarea><br>
+        <input type="submit" value="Run R Script">
+    </form>
+    <h2>Output:</h2>
+    <pre>{{ output|safe }}</pre>
+</body>
+</html>
