@@ -1,0 +1,53 @@
+demo <- T
+require(MASS)
+data("airquality")
+
+require(data.table)
+require(tidyverse)
+
+# convert to data.table
+
+raw     <- setDT(na.omit(airquality))[,-c("Day")]
+raw$Month <- as.factor(raw$Month)
+
+seed    <- 504737137
+
+(n      <- nrow(raw) )
+
+fmla <- Ozone ~ .
+
+base.resid <- lm(fmla,data=raw)$residuals
+
+if(demo){summary(lm(fmla,data=raw))}
+
+set.seed(seed)
+frac <- 0.1
+tst <- sample(n,ceiling(frac*n))
+m1  <- lm(fmla,data=raw[-tst,])
+if(demo){summary(m1)}
+cv.trn <- m1$fitted.values
+if(demo){summary(cv.trn)}
+cv.tst <- predict(m1,raw[tst,])
+if(demo){summary(cv.tst)}
+cv.resid <- data.table(loc=tst,diff=raw$Ozone[tst]-cv.tst)
+if(demo){summary(cv.resid)}
+fitPred <- function(trn,tst,i) {
+  m <- lm(fmla,data=trn)  
+  y <- tst$Ozone    
+  p <- predict(m,tst)     
+  r <- y - p              
+  return(data.table(idx=i,resid=r,y=y,yhat=p))
+}
+
+c2      <- data.table(grp=1:n, tst=1:n)
+dt2     <- c2[,fitPred(raw[-tst,],raw[tst,],tst),by=.(grp)]
+jk.resid      <- data.table(loc=dt2$idx,diff=dt2$resid)
+if(demo){summary(jk.resid)}
+
+set.seed(seed)
+kf  <- 10
+t       <- rep(1:kf,ceiling(n/kf))[1:n]
+c3      <- data.table(k=t ,idx=sample(n))  
+dt3     <- c3[,fitPred(raw[-idx,],raw[idx,],idx),by=.(k)]
+kf.resid <- data.table(k=dt3$k,loc=dt3$idx,diff=dt3$resid)
+if(demo){summary(kf.resid)}
